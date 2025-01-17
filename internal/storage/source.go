@@ -14,15 +14,6 @@ type SourcePostgresStorage struct {
 	db *sqlx.DB
 }
 
-// dbSource maps database rows to Go structs for internal use.
-type dbSource struct {
-	ID        int64     `db:"id"`
-	Name      string    `db:"name"`
-	URL       string    `db:"url"`
-	CreatedAt time.Time `db:"created_at"`
-	UpdatedAt time.Time `db:"updated_at"`
-}
-
 // NewSourceStorage initializes a new instance of SourcePostgresStorage.
 func NewSourceStorage(db *sqlx.DB) *SourcePostgresStorage {
 	return &SourcePostgresStorage{db: db}
@@ -125,4 +116,12 @@ func (s *SourcePostgresStorage) Delete(ctx context.Context, id int64) error {
 	}
 
 	return nil
+}
+
+// dbSource maps database rows to Go structs for internal use.
+type dbSource struct {
+	ID        int64     `db:"id"`
+	Name      string    `db:"name"`
+	URL       string    `db:"url"`
+	CreatedAt time.Time `db:"created_at"`
 }
