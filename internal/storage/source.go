@@ -23,6 +23,11 @@ type dbSource struct {
 	UpdatedAt time.Time `db:"updated_at"`
 }
 
+// NewSourceStorage initializes a new instance of SourcePostgresStorage.
+func NewSourceStorage(db *sqlx.DB) *SourcePostgresStorage {
+	return &SourcePostgresStorage{db: db}
+}
+
 // Sources retrieves all sources from the database.
 func (s *SourcePostgresStorage) Sources(ctx context.Context) ([]models.Source, error) {
 	const op = "storage.SourcePostgresStorage.Sources"
