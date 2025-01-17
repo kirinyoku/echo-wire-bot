@@ -26,7 +26,7 @@ func NewRSSSource(m models.Source) RSSSource {
 
 // Fetch retrieves and parses items from the RSS feed.
 // It uses a context to handle timeouts or cancellations.
-func (s *RSSSource) Fetch(ctx context.Context) ([]models.Item, error) {
+func (s RSSSource) Fetch(ctx context.Context) ([]models.Item, error) {
 	const op = "source.RSSSource.Fetch"
 
 	feed, err := s.loadFeed(ctx, s.URL)
@@ -51,7 +51,7 @@ func (s *RSSSource) Fetch(ctx context.Context) ([]models.Item, error) {
 }
 
 // loadFeed asynchronously fetches the RSS feed and returns it.
-func (s *RSSSource) loadFeed(ctx context.Context, url string) (*rss.Feed, error) {
+func (s RSSSource) loadFeed(ctx context.Context, url string) (*rss.Feed, error) {
 	var (
 		feedCh = make(chan *rss.Feed)
 		errCh  = make(chan error)
@@ -75,4 +75,12 @@ func (s *RSSSource) loadFeed(ctx context.Context, url string) (*rss.Feed, error)
 	case feed := <-feedCh:
 		return feed, nil
 	}
+}
+
+func (s RSSSource) ID() int64 {
+	return s.SourceID
+}
+
+func (s RSSSource) Name() string {
+	return s.SourceName
 }
