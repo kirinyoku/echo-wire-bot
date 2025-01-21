@@ -18,6 +18,7 @@ type Source struct {
 	Name      string
 	URL       string
 	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 // Article represents an individual article fetched from an RSS feed.

@@ -71,6 +71,7 @@ func (s *SourcePostgresStorage) SourceByID(ctx context.Context, id int64) (model
 		Name:      sourceDB.Name,
 		URL:       sourceDB.URL,
 		CreatedAt: sourceDB.CreatedAt,
+		UpdatedAt: sourceDB.UpdatedAt,
 	}, nil
 }
 
@@ -123,5 +124,6 @@ type dbSource struct {
 	ID        int64     `db:"id"`
 	Name      string    `db:"name"`
 	URL       string    `db:"url"`
+	UpdatedAt time.Time `db:"updated_at"`
 	CreatedAt time.Time `db:"created_at"`
 }
