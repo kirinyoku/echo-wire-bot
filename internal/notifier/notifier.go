@@ -17,7 +17,7 @@ import (
 )
 
 // ArticleProvider defines the interface for working with articles.
-type ArticleProvider interface {
+type ArticlesProvider interface {
 	// AllNotPosted retrieves articles that have not been posted yet,
 	// filtered by a timestamp and limited by a specified number.
 	AllNotPosted(ctx context.Context, since time.Time, limit uint64) ([]models.Article, error)
@@ -34,7 +34,7 @@ type Summarizer interface {
 // Notifier handles the process of selecting, summarizing, and sending articles
 // to a specified Telegram channel at regular intervals.
 type Notifier struct {
-	articles         ArticleProvider
+	articles         ArticlesProvider
 	summarizer       Summarizer
 	bot              *tgbotapi.BotAPI
 	sendInterval     time.Duration
@@ -44,7 +44,7 @@ type Notifier struct {
 
 // New initializes and returns a new Notifier instance.
 func New(
-	articleProvider ArticleProvider,
+	articleProvider ArticlesProvider,
 	summarizer Summarizer,
 	bot *tgbotapi.BotAPI,
 	sendInterval time.Duration,

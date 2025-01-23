@@ -13,12 +13,12 @@ import (
 )
 
 // ArticleStorage defines the interface for storing articles in a persistent layer.
-type ArticleStorage interface {
+type ArticlesStorage interface {
 	Store(context.Context, models.Article) error
 }
 
 // SourceProvider defines the interface for fetching a list of sources from a storage layer.
-type SourceProvider interface {
+type SourcesProvider interface {
 	Sources(ctx context.Context) ([]models.Source, error)
 }
 
@@ -31,8 +31,8 @@ type Source interface {
 
 // Fetcher is responsible for fetching and processing articles from multiple sources at regular intervals.
 type Fetcher struct {
-	articles ArticleStorage
-	source   SourceProvider
+	articles ArticlesStorage
+	sources  SourcesProvider
 
 	fetchInterval  time.Duration
 	filterKeywords []string
@@ -40,14 +40,14 @@ type Fetcher struct {
 
 // New creates a new Fetcher instance with the provided dependencies and configuration.
 func New(
-	articles ArticleStorage,
-	source SourceProvider,
+	articles ArticlesStorage,
+	source SourcesProvider,
 	fetchIntrerval time.Duration,
 	filterKeywords []string,
 ) *Fetcher {
 	return &Fetcher{
 		articles:       articles,
-		source:         source,
+		sources:        source,
 		fetchInterval:  fetchIntrerval,
 		filterKeywords: filterKeywords,
 	}
@@ -81,7 +81,7 @@ func (f *Fetcher) Run(ctx context.Context) error {
 func (f *Fetcher) Fetch(ctx context.Context) error {
 	const op = "fetcher.Fetch"
 
-	sources, err := f.source.Sources(ctx)
+	sources, err := f.sources.Sources(ctx)
 	if err != nil {
 		return fmt.Errorf("%s: %w", op, err)
 	}
